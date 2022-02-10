@@ -124,19 +124,54 @@
                             <input name="date_to" class="datepicker-here form-control digits" type="text" data-language="en" data-multiple-dates-separator=", " data-position="bottom left" placeholder="Date Left">
                         </div>
                     </div>
-                      </div>
+                    <div id="myDIV">
+                    <div class="col-md-12 mb-2">
+                          <div class="mb-6">
+                            <label class="form-label">Add Title</label>
+                            <input type="text" name="work_experience" class="form-control" placeholder="Position Held">
+                          </div>
+                        </div>
+                        <div class="col-sm-6 col-md-12 mb-2">
+                          <div class="mb-6">
+                            <label class="form-label">Add Company</label>
+                            <input type="text" name="work_experience" class="form-control" placeholder="Company">
+                          </div>
+                        </div> 
+                        <div class="col-md-12 mb-3">
+                          <div>
+                            <label class="form-label">Add Details</label>
+                            <textarea name="detail" class="form-control" rows="5" placeholder="Enter Job description"></textarea>
+                          </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                          <div>
+                            <label class="form-label">From</label>
+                            <input name="date_from" class="datepicker-here form-control digits" type="text" data-language="en" data-multiple-dates-separator=", " data-position="bottom left" placeholder="Date Joined">
+                        </div>
+                    </div>
+                    <div class="col-md-12 mb-2">
+                        <div>
+                            <label class="form-label">To</label>
+                            <input name="date_to" class="datepicker-here form-control digits" type="text" data-language="en" data-multiple-dates-separator=", " data-position="bottom left" placeholder="Date Left">
+                        </div>
+                    </div>
+                    </div>
                     
                     <div class="form-check mb-3 was-validated">
                         <input class="form-check-input" id="validationFormCheck1" type="checkbox">
                         <label class="form-check-label" required="" for="validationFormCheck1">I Currently Work Here.</label>
                        
                       </div>
-                      </div>
+                    </div>
+                  </div>
+                  
+
                     <div class="card-footer card-body btn-showcase">
                       
                       <a class="btn btn-secondary" href="{% url 'resume:update_resume3' %}">Next</a>
                       <a class="btn btn-primary" href="{% url 'app_user:app' %}">Skip</a>
                       <button class="btn btn-primary" type="submit">Done ({{ app_user.resume.resume_cent }}%).</button>
+                     <p class="btn btn-secondary" onclick="myFunction()">Add Experience</p>
                     
                     </div>
                   </form>
@@ -203,6 +238,28 @@
         </footer>
       </div>
     </div>
+
+    <style>
+#myDIV {
+  
+  
+  display: none;
+}
+</style>
+
+
+
+
+<script>
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
 
 {% endblock %}
 

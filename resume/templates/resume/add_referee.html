@@ -89,6 +89,36 @@
                             <input class="form-control" name="year" type="text" name="place_of_work"  placeholder="Referees place of work">
                         </div>
                     </div>
+                    <div id="myDIV">
+                      <div class="col-md-12 mb-2">
+                          <div class="mb-6">
+                            <label class="form-label">Name</label>
+                            <input type="text" name="referee" class="form-control" placeholder="Full Name">
+                          </div>
+                        </div>
+                   
+                        
+                        <div class="col-md-12 mb-2">
+                          <div class="mb-6">
+                            <label class="form-label">Phone</label>
+                            <input type="number" name="phone" class="form-control" placeholder="Phone Number">
+                          </div>
+                        </div>
+
+                        <div class="col-md-12 mb-2">
+                          <div class="mb-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" placeholder="Referees Email Address">
+                          </div>
+                        </div>
+                        <div class="col-md-12 mb-2">
+                        <div class="mb-6">
+                            <label class="form-label">Place of Work</label>
+                            <input class="form-control" name="year" type="text" name="place_of_work"  placeholder="Referees place of work">
+                        </div>
+                    </div>
+
+                    </div>
                     
                       </div>
                        </div>
@@ -98,7 +128,8 @@
                       
                       <!--<a class="btn btn-secondary" href="{% url 'resume:update_resume3' %}">Next</a>
                       <a class="btn btn-primary" href="{% url 'app_user:app' %}">Skip</a>-->
-                      <button style="width: 100%" class="btn btn-primary" type="submit">Done ({{ app_user.resume.resume_cent }}%).</button>
+                      <p class="btn btn-secondary" onclick="myFunction()">Add Referee</p>
+                      <button class="btn btn-primary" type="submit">Done ({{ app_user.resume.resume_cent }}%).</button>
                     
                     </div>
                   </form>
@@ -165,6 +196,28 @@
         </footer>
       </div>
     </div>
+
+    <style>
+#myDIV {
+  
+  
+  display: none;
+}
+</style>
+
+
+
+
+<script>
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
 
 {% endblock %}
 

@@ -55,7 +55,7 @@
                       <div class="u-pearl col-3"><span class="u-pearl-number">3</span><span class="u-pearl-title"><a href="{% url 'resume:add_career' %}">Career</a></span></div>
                       <div class="u-pearl col-3"><span class="u-pearl-number">4</span><span class="u-pearl-title"><a href="{% url 'resume:add_education' %}">Education</a></span></div>
                     </div>
-                      <h4 class="card-title mb-0">Edit Profile</h4>
+                      <h4 class="card-title mb-0">Bio</h4>
                       <div class="card-options"><a class="card-options-collapse" href="#" data-bs-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a><a class="card-options-remove" href="#" data-bs-toggle="card-remove"><i class="fe fe-x"></i></a></div>
                     </div>
                     <div class="card-body">
@@ -73,15 +73,33 @@
                             <textarea name="opening_statement" class="form-control" rows="5" placeholder="Let Us Meet You"></textarea>
                           </div>
                         </div>
+                        <div id="myDIV">
+                        <div  class="col-md-12">
+                          <div>
+                            <label class="form-label">Add Boi</label>
+                            <textarea name="title" value="{{ title }}" class="form-control" rows="5" placeholder="Keep it Apt and Simple!"></textarea>
+                          </div>
+                        </div>
+                        <div class="col-md-12">
+                          <div>
+                            <label class="form-label">Add Summary</label>
+                            <textarea name="opening_statement" class="form-control" rows="5" placeholder="Let Us Meet You"></textarea>
+                          </div>
+                        </div>
                       </div>
                     </div>
+                    </div>
+                    
                     <div class="card-footer card-body btn-showcase">
                       
                       <a class="btn btn-secondary" href="{% url 'app_user:app' %}">Skip</a>
                       <button class="btn btn-primary" type="submit">Next({{ app_user.resume.resume_cent }}%).</button>
-                    
+                    <p class="btn btn-secondary" onclick="myFunction()">Add Bio</p>
                     </div>
+
+
                   </form>
+
                 </div>
                 <div class="col-xl-4">
                   <div class="card">
@@ -119,6 +137,7 @@
                         </div>
                         <div class="form-footer">
                           <button class="btn btn-primary btn-block">Save</button>
+
                         </div>
                       </form>
                     </div>
@@ -145,6 +164,31 @@
         </footer>
       </div>
     </div>
+
+
+
+<style>
+#myDIV {
+  
+  
+  display: none;
+}
+</style>
+
+
+
+
+<script>
+function myFunction() {
+  var x = document.getElementById("myDIV");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+  } else {
+    x.style.display = "none";
+  }
+}
+</script>
+
 
 {% endblock %}
 
