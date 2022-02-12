@@ -172,7 +172,7 @@ def AllRecruitView(request):
 	else:
 		recruits = AppUser.objects.filter(account_type="candidate").order_by('-pub_date')
 
-		context = {"recruits": recruits}
+		context = {"recruits": recruits, "app_user": app_user,}
 		return render(request, "app_user/all_recruits.html", context )
 
 

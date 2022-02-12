@@ -25,6 +25,7 @@ def IndexView(request):
 
 
 	else:
+
 		context = {"app_user": app_user}
 		return render(request, "resume/index.html", context )
 
@@ -334,5 +335,5 @@ def UpdateResume5View(request):
 
 	else:
 		context = {}
-		return render(request, "wallet/update_resume5.html", context )
+		return render(request, "resume/update_resume5.html", context )
 
