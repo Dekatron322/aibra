@@ -6,6 +6,40 @@
 
 
 {% include 'app_user/header.html' %}
+<style type="text/css">
+    
+    .alert{
+        box-shadow: 5px 5px 10px #111;
+        border: none;
+    }
+    @keyframes show-toast {
+    0%   {bottom: -100%;}
+    20%  {bottom: 50px;}
+    80%  {bottom: 50px;}
+    100% {bottom: -10%;}
+}
+
+.notification.is-toast {
+    position: fixed;
+    bottom: 100%;
+    right: 20px;
+    animation-name: show-toast;
+    animation-duration: 6s;
+}
+@media(max-width: 450px) {
+    h3{
+      font-size: 15px !important;
+    }
+  }
+</style>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="notification is-toast alert alert-{{message.tags}} text-center" role="alert" style="background-color: #24695c; color: #fff; border-radius: 6px; font-weight: 600; z-index: 1;">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
         <!-- Page Sidebar Ends-->
         <div class="page-body">
           <div class="container-fluid">
@@ -40,6 +74,7 @@
           <!-- Container-fluid starts-->
           <div class="container-fluid">
             <div class="row">
+
               <div class="col-xl-3 xl-40 box-col-4">
                 <div class="job-sidebar"><a class="btn btn-primary job-toggle" href="javascript:void(0)">job filter</a>
                   <div class="job-left-aside custom-scrollbar">
@@ -49,42 +84,37 @@
                           <div class="card">
                             <div class="card-header">
                               <h5 class="mb-0 p-0">
+
                                 <button class="btn btn-link ps-0" data-bs-toggle="collapse" data-bs-target="#collapseicon" aria-expanded="true" aria-controls="collapseicon">Filter</button>
                               </h5>
                             </div>
                             <div class="collapse show" id="collapseicon" aria-labelledby="collapseicon" data-parent="#accordion">
                               <div class="card-body filter-cards-view animate-chk">
+                                <form method="post">
+                                {% csrf_token %}
                                 <div class="job-filter mb-3">
                                   <div class="faq-form">
-                                    <input class="form-control" type="text" placeholder="Search.."><i class="search-icon" data-feather="search"></i>
-                                  </div>
-                                </div>
-                                <div class="job-filter">
-                                  <div class="faq-form">
-                                    <input class="form-control" type="text" placeholder="location.."><i class="search-icon" data-feather="map-pin"></i>
+                                    <input name="query" class="form-control" type="text" placeholder="Search.."><i class="search-icon" data-feather="search"></i>
                                   </div>
                                 </div>
                                 <div class="checkbox-animated">
-                                  <label class="d-block" for="chk-ani">
-                                    <input class="checkbox_animated" id="chk-ani" type="checkbox"> Full-time (8688)
-                                  </label>
-                                  <label class="d-block" for="chk-ani1">
-                                    <input class="checkbox_animated" id="chk-ani1" type="checkbox"> Contract (503)
-                                  </label>
-                                  <label class="d-block" for="chk-ani2">
-                                    <input class="checkbox_animated" id="chk-ani2" type="checkbox"> Part-time (288)
-                                  </label>
-                                  <label class="d-block" for="chk-ani3">
-                                    <input class="checkbox_animated" id="chk-ani3" type="checkbox"> Internship (236)
-                                  </label>
-                                  <label class="d-block" for="chk-ani4">
-                                    <input class="checkbox_animated" id="chk-ani4" type="checkbox">  Temporary (146)
-                                  </label>
-                                  <label class="d-block" for="chk-ani5">
-                                    <input class="checkbox_animated" id="chk-ani5" type="checkbox"> Commission (25)
-                                  </label>
+                                  {% if job_types %}
+                                    {% for item in job_types %}
+                                      <a href="{% url 'job:search_job' 'job_type' item %}">
+
+                                      <button type="submit" class="btn btn-outline-primary mb-2" type="button" style="text-transform: capitalize;"><i class="icofont icofont-star-shape" ></i> {{ item }}</button>
+                                </a>
+                                    {% endfor %}
+                                  {% else %}
+
+
+
+                                  {% endif %}
+                                  
+
                                 </div>
-                                <button class="btn btn-primary text-center" type="button">Find jobs</button>
+                              
+                                </form>
                               </div>
                             </div>
                           </div>
@@ -99,50 +129,21 @@
                             <div class="collapse show" id="collapseicon1" aria-labelledby="collapseicon1" data-parent="#accordion">
                               <div class="card-body animate-chk">
                                 <div class="location-checkbox">
-                                  <label class="d-block" for="chk-ani6">
-                                    <input class="checkbox_animated" id="chk-ani6" type="checkbox">                            Letraset<span class="d-block">New York, NY (399)</span>
-                                  </label>
-                                  <label class="d-block" for="chk-ani7">
-                                    <input class="checkbox_animated" id="chk-ani7" type="checkbox">                            Established<span class="d-block">San Francisco, CA (252) </span>
-                                  </label>
-                                  <label class="d-block mb-0" for="chk-ani8">
-                                    <input class="checkbox_animated" id="chk-ani8" type="checkbox">                            Contrary<span class="d-block">Washington, DC (226)</span>
-                                  </label>
+
+                                  {% if countries %}
+                                    {% for item in countries %}
+                                    
+                                      <a href="{% url 'job:search_job' 'country' item %}"><button type="submit" class="btn btn-outline-primary mb-2" type="button" style="text-transform: capitalize;"><i class="icofont icofont-star-shape"></i> {{ item }}</button></a>
+                                    {% endfor %}
+                                  {% else %}
+
+                                  {% endif %}
                                 </div>
                               </div>
-                              <button class="btn btn-block btn-primary text-center" type="button">All Locations</button>
                             </div>
                           </div>
                         </div>
-                        <div class="col-xl-12">
-                          <div class="card">
-                            <div class="card-header">
-                              <h5 class="mb-0 p-0">
-                                <button class="btn btn-link ps-0" data-bs-toggle="collapse" data-bs-target="#collapseicon2" aria-expanded="true" aria-controls="collapseicon2">Job Title</button>
-                              </h5>
-                            </div>
-                            <div class="collapse show" id="collapseicon2" data-parent="#accordion" aria-labelledby="collapseicon2">
-                              <div class="card-body animate-chk">
-                                <label class="d-block" for="chk-ani9">
-                                  <input class="checkbox_animated" id="chk-ani9" type="checkbox">                          UI/Ux designer(25)
-                                </label>
-                                <label class="d-block" for="chk-ani10">
-                                  <input class="checkbox_animated" id="chk-ani10" type="checkbox">                          Graphic designer(10)
-                                </label>
-                                <label class="d-block" for="chk-ani11">
-                                  <input class="checkbox_animated" id="chk-ani11" type="checkbox">                          Front end designer(15)
-                                </label>
-                                <label class="d-block" for="chk-ani12">
-                                  <input class="checkbox_animated" id="chk-ani12" type="checkbox">                          PHP developer(42)
-                                </label>
-                                <label class="d-block mb-0" for="chk-ani13">
-                                  <input class="checkbox_animated" id="chk-ani13" type="checkbox">                        React Developer( 5 )
-                                </label>
-                              </div>
-                              <button class="btn btn-block btn-primary text-center" type="button">All Job Title</button>
-                            </div>
-                          </div>
-                        </div>
+                        
                         <div class="col-xl-12">
                           <div class="card">
                             <div class="card-header">
@@ -152,55 +153,18 @@
                             </div>
                             <div class="collapse show" id="collapseicon3" data-parent="#accordion" aria-labelledby="collapseicon3">
                               <div class="card-body animate-chk">
-                                <label class="d-block" for="chk-ani14">
-                                  <input class="checkbox_animated" id="chk-ani14" type="checkbox">                          Computer Software(14)
-                                </label>
-                                <label class="d-block" for="chk-ani15">
-                                  <input class="checkbox_animated" id="chk-ani15" type="checkbox">                          IT Engineer(10)
-                                </label>
-                                <label class="d-block" for="chk-ani16">
-                                  <input class="checkbox_animated" id="chk-ani16" type="checkbox">                          Service industry(20)
-                                </label>
-                                <label class="d-block" for="chk-ani17">
-                                  <input class="checkbox_animated" id="chk-ani17" type="checkbox">                         Accounting ( 34 )
-                                </label>
-                                <label class="d-block mb-0" for="chk-ani18">
-                                  <input class="checkbox_animated" id="chk-ani18" type="checkbox">                          Financial Services(5)
-                                </label>
+                                {% if categories %}
+                                    {% for item in categories %}
+                                      <a href="{% url 'job:search_job' 'category' item %}"><button type="submit" class="btn btn-outline-primary mb-2" type="button" style="text-transform: capitalize;"><i class="icofont icofont-star-shape"></i> {{ item }}</button></a>
+                                    {% endfor %}
+                                  {% else %}
+
+                                  {% endif %}
                               </div>
-                              <button class="btn btn-block btn-primary text-center" type="button">All Industries</button>
                             </div>
                           </div>
                         </div>
-                        <div class="col-xl-12">
-                          <div class="card">
-                            <div class="card-header">
-                              <h5 class="mb-0 p-0">
-                                <button class="btn btn-link ps-0" data-bs-toggle="collapse" data-bs-target="#collapseicon4" aria-expanded="true" aria-controls="collapseicon4">Specific skills</button>
-                              </h5>
-                            </div>
-                            <div class="collapse show" id="collapseicon4" data-parent="#accordion" aria-labelledby="collapseicon4">
-                              <div class="card-body animate-chk">
-                                <label class="d-block" for="chk-ani19">
-                                  <input class="checkbox_animated" id="chk-ani19" type="checkbox">                          HTML,scss & sass
-                                </label>
-                                <label class="d-block" for="chk-ani20">
-                                  <input class="checkbox_animated" id="chk-ani20" type="checkbox">                          Javascript
-                                </label>
-                                <label class="d-block" for="chk-ani21">
-                                  <input class="checkbox_animated" id="chk-ani21" type="checkbox">                          Node.js
-                                </label>
-                                <label class="d-block" for="chk-ani22">
-                                  <input class="checkbox_animated" id="chk-ani22" type="checkbox">                          Gulp & Pug
-                                </label>
-                                <label class="d-block mb-0" for="chk-ani23">
-                                  <input class="checkbox_animated" id="chk-ani23" type="checkbox">                          Angular.js
-                                </label>
-                              </div>
-                              <button class="btn btn-block btn-primary text-center" type="button">All Skills</button>
-                            </div>
-                          </div>
-                        </div>
+                        
                       </div>
                     </div>
                   </div>
@@ -214,8 +178,8 @@
                     <div class="card-body">
                       <div class="media"><img class="img-40 img-fluid m-r-20" src="{% static 'main/assets/images/job-search/1.jpg' %}" alt="">
                         <div class="media-body">
-                          <h6 class="f-w-600"><a href="{% url 'job:job_detail' item.id %}">{{ item.title }}<span class="badge badge-primary pull-right">Actively Recruiting</span></a></h6>
-                          <p>(L6) Salt Lake City, UT</p>
+                          <h6 class="f-w-600" style="text-transform: capitalize;"><a href="{% url 'job:job_detail' item.id %}">{{ item.title }}<span class="badge badge-primary pull-right">Actively Recruiting</span></a></h6>
+                          <p>{{ item.app_user.agency_name }}</p>
                           <ul class="rating">
                             <li><i class="fa fa-star font-warning"></i></li>
                             <li><i class="fa fa-star font-warning"></i></li>
@@ -228,7 +192,7 @@
                       <p>
                         {{ item.description|truncatewords:40 }}
                       </p>
-                      <a href="{% url 'job:edit_job' item.id %}" class="btn btn-primary-light">Edit Job</a>
+                      <a href="{% url 'job:apply_job' item.id app_user.id %}" class="btn btn-primary-light">Easily Apply</a>  <a href="{% url 'job:job_detail' item.id %}" class="btn btn-primary-light">View Details</a>
                     </div>
 
                   </div>
@@ -251,6 +215,23 @@
           </div>
           <!-- Container-fluid Ends-->
         </div>
+        
+
+        <!-- footer start-->
+        <footer class="footer">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-6 footer-copyright">
+                <p class="mb-0">Copyright 2021-22 © Aibra All rights reserved.</p>
+              </div>
+              <div class="col-md-6">
+                <p class="pull-right mb-0">Hand crafted & made with <i class="fa fa-heart font-secondary"></i></p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
 
 
 {% endblock %}

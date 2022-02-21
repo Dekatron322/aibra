@@ -33,7 +33,7 @@
 
 {% if messages %}
     {% for message in messages %}
-        <div class="notification is-toast alert alert-{{message.tags}} text-center" role="alert" style="background-color: red; color: #fff; border-radius: 6px; font-weight: 600; z-index: 1;">
+        <div class="notification is-toast alert alert-{{message.tags}} text-center" role="alert" style="background-color: #246956; color: #fff; border-radius: 6px; font-weight: 600; z-index: 1;">
             {{ message }}
         </div>
     {% endfor %}
@@ -93,38 +93,36 @@
                           <div class="collapse show" id="collapseicon2" aria-labelledby="collapseicon2" data-parent="#accordion">
                             <div class="card-body post-about">
                               <ul>
-                              	<li>
+                                <li>
                                   <div class="icon"><i data-feather="user"></i></div>
                                   <div>
                                     <h5>Age</h5>
-                                    <p>{{ recruit.age }} years Old</p>
+                                    <p>{{ recruit.age }} years old</p>
                                   </div>
                                 </li>
                                 <li>
                                   <div class="icon"><i data-feather="phone"></i></div>
                                   <div>
                                     <h5>Phone</h5>
-                                    <p>+234-08129859405</p>
+                                    <p>{{ recruit.phone_no }}</p>
                                   </div>
                                 </li>
-                              	{% for item in recruit.resume.work_experiences.all %}
+                                {% if recruit.account_type == "candidate" %}
                                 <li>
                                   <div class="icon"><i data-feather="briefcase"></i></div>
                                   <div>
-                                    <h5>{{ item.work_experience }} at Pixelstrap</h5>
-                                    <p>{{ item.date_from }} - {{ item.date_to }}</p>
+                                    <h5>Work</h5>
+                                    <p>{{ recruit.resume.work_experiences.last }}</p>
                                   </div>
                                 </li>
-                                {% endfor %}
-                                {% for item in recruit.resume.educations.all %}
                                 <li>
                                   <div class="icon"><i data-feather="book"></i></div>
                                   <div>
-                                    <h5>studied computer science</h5>
-                                    <p>{{ item.education }} - {{ item.date_to }}</p>
+                                    <h5>Education</h5>
+                                    <p>{{ recruit.resume.educations.last }}</p>
                                   </div>
                                 </li>
-                                {% endfor %}
+                                {% endif %}
                                 <li>
                                   <div class="icon"><i data-feather="map-pin"></i></div>
                                   <div>
@@ -132,22 +130,14 @@
                                     <p>{{ recruit.country }}</p>
                                   </div>
                                 </li>
-                                {% for item in recruit.resume.hobbies.all %}
-                                <li>
-                                  <div class="icon"><i data-feather="coffee"></i></div>
-                                  <div>
- 
-                                    <h5>Hobbies</h5>
-                                    <p>{{ item.hobby }}</p>
-                                  </div>
-                                </li>
-                                {% endfor %}
+
                               </ul>
                               <div class="social-network theme-form"><span class="f-w-600">Social Networks</span>
-                                <button class="btn social-btn btn-fb mb-2 text-center"><i class="fa fa-facebook m-r-5"></i>Facebook</button>
-                                <button class="btn social-btn btn-twitter mb-2 text-center"><i class="fa fa-twitter m-r-5"></i>Twitter</button>
-                                
-                                 <button class="btn social-btn btn-dark text-center"><i class="fa fa-github m-r-5"></i>Github</button>
+                                <a href="{{ app_user.facebook_link }}"><button  class="btn social-btn btn-fb mb-2 text-center"><i class="fa fa-facebook m-r-5"></i>Facebook</button></a>
+                                <a href="{{ app_user.twitter_link }}"><button  class="btn social-btn btn-twitter mb-2 text-center"><i class="fa fa-twitter m-r-5"></i>Twitter</button></a>
+                                <a href="{{ app_user.whatsapp_link }}"><button style="background-color: #128c7e !important; border: none" class="btn social-btn btn-dark mb-2 text-center"><i class="fa fa-whatsapp m-r-5" style=""></i>Whatsapp</button></a>
+                                <a href="{{ app_user.github_link }}"><button class="btn social-btn mb-2 btn-dark text-center"><i class="fa fa-github m-r-5"></i>Github</button></a>
+                                <a href="{{ app_user.instagram_link }}"><button style="background-color: #8a3ab9 !important; border: none;" class="btn social-btn mb-2 btn-dark text-center"><i class="fa fa-instagram m-r-5"></i>Instagram</button></a>
                               </div>
                             </div>
                           </div>
@@ -167,10 +157,11 @@
                       <div class="card">
                         <div class="profile-post">
                           <div class="post-header">
-                            <div class="media"><img class="img-thumbnail rounded-circle me-3" src="{% static 'main/assets/images/user/7.jpg' %}" alt="Generic placeholder image">
+                            <div class="media"><img class="img-thumbnail rounded-circle me-3" src="{{ recruit.profile_photo.url }}" alt="Generic placeholder image">
                               <div class="media-body align-self-center"><a href="">
                                   <h5 class="user-name">{{ recruit.user.first_name }} {{ recruit.user.last_name }}</h5></a>
                                 <h6>{{ recruit.user.email }}</h6>
+                                <a href="{{ item.app_user.cv.url }}" class="btn btn-primary-light" download>Download Resume</a>
                               </div>
                             </div>
                             <div class="post-setting"><i class="fa fa-ellipsis-h"></i></div>
@@ -260,7 +251,24 @@
                 </div>
                 
         </div>
+      </div></div>
+    </div>
+    
         <!-- footer start-->
+        <footer class="footer">
+          <div class="container-fluid"> 
+            <div class="row">
+              <div class="col-md-6 footer-copyright">
+                <p class="mb-0">Copyright 2021-22 © Aibra All rights reserved.</p>
+              </div>
+              <div class="col-md-6">
+                <p class="pull-right mb-0">Hand crafted & made with <i class="fa fa-heart font-secondary"></i></p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
     {% endblock %}
 
 

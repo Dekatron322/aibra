@@ -33,7 +33,7 @@
 
 {% if messages %}
     {% for message in messages %}
-        <div class="notification is-toast alert alert-{{message.tags}} text-center" role="alert" style="background-color: red; color: #fff; border-radius: 6px; font-weight: 600; z-index: 1;">
+        <div class="notification is-toast alert alert-{{message.tags}} text-center" role="alert" style="background-color: #246956; color: #fff; border-radius: 6px; font-weight: 600; z-index: 1;">
             {{ message }}
         </div>
     {% endfor %}
@@ -84,34 +84,35 @@
                     <div class="profile-img-wrrap"><img class="img-fluid bg-img-cover" src="{% static 'main/assets/images/user-profile/bg-profile.jpg' %}" alt=""></div>
                     <div class="userpro-box">
                       <div class="img-wrraper">                              
-                        <div class="avatar"><img alt="" src="{% static 'main/assets/images/user/7.jpg' %}" data-intro="This is Profile image"></div>
+                        <div class="avatar"><img alt="" src="{{ app_user.profile_photo.url }}" data-intro="This is Profile image"></div>
                         <div class="icon-wrapper"><i class="icofont icofont-pencil-alt-5" data-intro="Change Profile image here"></i></div>
                       </div>
                       <div class="user-designation">
-                        <div class="title"><a target="_blank" href=""> 
-                            <h4>Emay Walter</h4>
-                            <h6>designer</h6></a></div>
+
+                        <div class="title">
+                          <a target="_blank" href=""> 
+                            <h4>{{ app_user.first_name }} {{ app_user.last_name }}</h4>
+                            {% if app_user.account_type == "candidate" %}
+                              <h6>{{ app_user.resume.titles.first }}</h6>
+                            {% elif app_user.account_type == "recruiter" %}
+                              <h6>{{ app_user.agency_name }}</h6>
+                            {% else %}
+                            {% endif %}
+
+                          </a>
+
+                        </div>
                         <div class="social-media" data-intro="This is your Social details">
                           <ul class="user-list-social">
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-instagram"></i></a></li>
-                            <li><a href="#"><i class="fa fa-rss"></i></a></li>
+                            <li><a href="{{ app_user.facebook_link }}"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="{{ app_user.twitter_link }}"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="{{ app_user.instagram_link }}"><i class="fa fa-instagram"></i></a></li>
+                            <li><a href="{{ app_user.whatsapp_link }}"><i class="fa fa-whatsapp"></i></a></li>
+                            <li><a href="{{ app_user.github_link }}"><i class="fa fa-github"></i></a></li>
                           </ul>
                         </div>
                         <div class="follow">
-                          <ul class="follow-list">
-                            <li>
-                              <div class="follow-num counter">325</div><span>Follower</span>
-                            </li>
-                            <li>
-                              <div class="follow-num counter">450</div><span>Following</span>
-                            </li>
-                            <li>
-                              <div class="follow-num counter">500</div><span>Likes</span>
-                            </li>
-                          </ul>
+                          <a class="btn btn-primary" href="{% url 'app_user:update_appuser' %}">Edit Profile</a>
                         </div>
                       </div>
                     </div>
@@ -134,57 +135,47 @@
                                   <div class="icon"><i data-feather="user"></i></div>
                                   <div>
                                     <h5>Age</h5>
-                                    <p>{{ recruit.age }} years Old</p>
+                                    <p>{{ app_user.age }} years old</p>
                                   </div>
                                 </li>
                                 <li>
                                   <div class="icon"><i data-feather="phone"></i></div>
                                   <div>
                                     <h5>Phone</h5>
-                                    <p>+234-08129859405</p>
+                                    <p>{{ app_user.phone_no }}</p>
                                   </div>
                                 </li>
-                                {% for item in recruit.resume.work_experiences.all %}
+                                {% if app_user.account_type == "candidate" %}
                                 <li>
                                   <div class="icon"><i data-feather="briefcase"></i></div>
                                   <div>
-                                    <h5>{{ item.work_experience }} at Pixelstrap</h5>
-                                    <p>{{ item.date_from }} - {{ item.date_to }}</p>
+                                    <h5>Work</h5>
+                                    <p>{{ app_user.resume.work_experiences.last }}</p>
                                   </div>
                                 </li>
-                                {% endfor %}
-                                {% for item in recruit.resume.educations.all %}
                                 <li>
                                   <div class="icon"><i data-feather="book"></i></div>
                                   <div>
-                                    <h5>studied computer science</h5>
-                                    <p>{{ item.education }} - {{ item.date_to }}</p>
+                                    <h5>Education</h5>
+                                    <p>{{ app_user.resume.educations.last }}</p>
                                   </div>
                                 </li>
-                                {% endfor %}
+                                {% endif %}
                                 <li>
                                   <div class="icon"><i data-feather="map-pin"></i></div>
                                   <div>
-                                    <h5>lived in {{ recruit.address }}</h5>
-                                    <p>{{ recruit.country }}</p>
+                                    <h5>lived in {{ app_user.address }}</h5>
+                                    <p>{{ app_user.country }}</p>
                                   </div>
                                 </li>
-                                {% for item in recruit.resume.hobbies.all %}
-                                <li>
-                                  <div class="icon"><i data-feather="coffee"></i></div>
-                                  <div>
- 
-                                    <h5>Hobbies</h5>
-                                    <p>{{ item.hobby }}</p>
-                                  </div>
-                                </li>
-                                {% endfor %}
+
                               </ul>
                               <div class="social-network theme-form"><span class="f-w-600">Social Networks</span>
-                                <button class="btn social-btn btn-fb mb-2 text-center"><i class="fa fa-facebook m-r-5"></i>Facebook</button>
-                                <button class="btn social-btn btn-twitter mb-2 text-center"><i class="fa fa-twitter m-r-5"></i>Twitter</button>
-                                
-                                 <button class="btn social-btn btn-dark text-center"><i class="fa fa-github m-r-5"></i>Github</button>
+                                <a href="{{ app_user.facebook_link }}"><button  class="btn social-btn btn-fb mb-2 text-center"><i class="fa fa-facebook m-r-5"></i>Facebook</button></a>
+                                <a href="{{ app_user.twitter_link }}"><button  class="btn social-btn btn-twitter mb-2 text-center"><i class="fa fa-twitter m-r-5"></i>Twitter</button></a>
+                                <a href="{{ app_user.whatsapp_link }}"><button style="background-color: #128c7e !important; border: none" class="btn social-btn btn-dark mb-2 text-center"><i class="fa fa-whatsapp m-r-5" style=""></i>Whatsapp</button></a>
+                                <a href="{{ app_user.github_link }}"><button class="btn social-btn mb-2 btn-dark text-center"><i class="fa fa-github m-r-5"></i>Github</button></a>
+                                <a href="{{ app_user.instagram_link }}"><button style="background-color: #8a3ab9 !important; border: none;" class="btn social-btn mb-2 btn-dark text-center"><i class="fa fa-instagram m-r-5"></i>Instagram</button></a>
                               </div>
                             </div>
                           </div>
@@ -204,15 +195,35 @@
                       <div class="card">
                         <div class="profile-post">
                           <div class="post-header">
-                            <div class="media"><img class="img-thumbnail rounded-circle me-3" src="{% static 'main/assets/images/user/7.jpg' %}" alt="Generic placeholder image">
+                            <div class="media"><img class="img-thumbnail rounded-circle me-3" src="{{ app_user.profile_photo.url }}" alt="Generic placeholder image">
                               <div class="media-body align-self-center"><a href="">
-                                  <h5 class="user-name">{{ recruit.user.first_name }} {{ recruit.user.last_name }}</h5></a>
-                                <h6>{{ recruit.user.email }}</h6>
+                                  <h5 class="user-name">{{ app_user.user.first_name }} {{ app_user.user.last_name }}</h5></a>
+                                <h6>{{ app_user.user.email }}</h6>
                               </div>
                             </div>
                             <div class="post-setting"><i class="fa fa-ellipsis-h"></i></div>
                           </div>
                           <div class="post-body">
+                            {% if app_user.account_type == "recruiter" %}
+                              <h5 class="user-name">Agency:</h5>
+                              <p>{{ app_user.agency_name }}</p>
+
+                              <h5 class="user-name">Phone:</h5>
+                              <p>{{ app_user.phone_no }}</p>
+
+                              <h5 class="user-name">Address:</h5>
+                              <p>{{ app_user.address }}</p>
+
+                              <h5 class="user-name">Country:</h5>
+                              <p>{{ app_user.country }}</p>
+
+                              <h5 class="user-name">Date registered:</h5>
+                              <p>{{ app_user.pub_date }}</p>
+
+                            {% endif %}
+
+
+                            {% if app_user.account_type == "candidate" %}
                             <div class="img-container">
                               <div class="my-gallery" id="aniimated-thumbnials" itemscope="">
                                 <figure itemprop="associatedMedia" itemscope=""><a href="{% static 'main/assets/images/user-profile/post1.jpg" itemprop="contentUrl" data-size="1600x950"><img class="img-fluid rounded" src="../assets/images/user-profile/post1.jpg' %}" itemprop="thumbnail" alt="gallery"></a>
@@ -222,70 +233,71 @@
                             </div>
                             <div class="post-react">
                               
-                              <h6>{{ recruit.resume.opening_statements.all.0 }}</h6>
+                              <h6>{{ app_user.resume.opening_statements.last }}</h6>
                             </div>
                             <hr>
-                            <h5>Career Overview</h5>
-                            {% for item in recruit.resume.careers.all %}
-                             
-                            <p>{{ item.detail }}.</p>
                             
-                            <ul class="post-comment">
-                              <li>
-                                <label><a href="#"><i data-feather="calendar"></i>&nbsp;&nbsp;from<span class="counter">{{ item.date_from }} - {{ item.date_to }}</span></a></label>
-                              </li>
+                              <h5>Career Overview</h5>
+                              {% for item in app_user.resume.careers.all %}
+                               
+                              <p>{{ item.detail }}</p>
                               
-                              
+                              <ul class="post-comment">
+                                <li>
+                                  <label><a href="#"><i data-feather="calendar"></i>&nbsp;&nbsp;from<span class="counter">{{ item.date_from }} - {{ item.date_to }}</span></a></label>
+                                </li>
 
-                            </ul>
-                            {% endfor %}
-                            <hr>
+                              </ul>
+                              {% endfor %}
+                              <hr>
 
-                            <h5>Work Experience</h5>
-                            {% for item in recruit.resume.work_experiences.all %}                             
-                            <p>{{ item.detail }}.</p>
-                            <ul class="post-comment">
-                              <li>
-                                <label><a href="#"><i data-feather="calendar"></i>&nbsp;&nbsp;from<span class="counter">{{ item.date_from }} - {{ item.date_to }}</span></a></label>
-                              </li>
-                              
-                              
+                              <h5>Work Experience</h5>
+                              {% for item in app_user.resume.work_experiences.all %}  
+                              <h6>{{ item.work_experience }}</h6>                           
+                              <p>{{ item.detail }}</p>
+                              <ul class="post-comment">
+                                <li>
+                                  <label><a href="#"><i data-feather="calendar"></i>&nbsp;&nbsp;from<span class="counter">{{ item.date_from }} - {{ item.date_to }}</span></a></label>
+                                </li>
+                                
+                                
 
-                            </ul>
-                            {% endfor %}
-                            <hr>
+                              </ul>
+                              {% endfor %}
+                              <hr>
 
-                            <h5>Projects</h5>
-                            {% for item in recruit.resume.projects.all %}
-                            <p><b>(1). {{ item.title }}</b></p>                             
-                            <p>{{ item.detail }}.</p>
-                            <ul class="post-comment">
-                              <li>
-                                <label><a href="#"><i data-feather="link"></i>&nbsp;&nbsp;<span class="counter">{{ item.link }}</span></a></label>
-                              </li>
-                              
-                              
+                              <h5>Projects</h5>
+                              {% for item in app_user.resume.projects.all %}
+                              <p><b>{{ item.project }}</b></p>                             
+                              <p>{{ item.detail }}</p>
+                              <ul class="post-comment">
+                                <li>
+                                  <label><a href="{{ item.link }}" target="_blank"><i data-feather="link"></i>&nbsp;&nbsp;<span class="counter">{{ item.link }}</span></a></label>
+                                </li>
+                                
+                                
 
-                            </ul>
-                            {% endfor %}
-                            <hr>
-                            <h5><i class="fa fa-certificate"></i> Certifications</h5>
-                            {% for item in recruit.resume.certifications.all %}
-                             
-                            <p>{{ item.certification }}</p>
-                            <p>{{ item.detail }}</p>
-                            <ul class="post-comment">
-                              <li>
-                                <label><a href="#"><i data-feather="calendar"></i>&nbsp;&nbsp;<span class="counter">{{ item.year }}</span></a></label>
-                              </li>
-                              <li>
-                                <label><a href="#"><i data-feather="link"></i>&nbsp;&nbsp;<span class="counter">{{ item.link }}</span></a></label>
-                              </li>
-                              
-                              
+                              </ul>
+                              {% endfor %}
+                              <hr>
+                              <h5><i class="fa fa-certificate"></i> Certifications</h5>
+                              {% for item in app_user.resume.awards.all %}
+                               
+                              <p>{{ item.awards }}</p>
+                              <p>{{ item.detail }}</p>
+                              <ul class="post-comment">
+                                <li>
+                                  <label><a href="#"><i data-feather="calendar"></i>&nbsp;&nbsp;<span class="counter">{{ item.year }}</span></a></label>
+                                </li>
+                                <li>
+                                  <label><a href="{{ item.link }}" target="_blank"><i data-feather="link"></i>&nbsp;&nbsp;<span class="counter">{{ item.link }}</span></a></label>
+                                </li>
+                                
+                                
 
-                            </ul>
-                            {% endfor %}
+                              </ul>
+                              {% endfor %}
+                            {% endif %}
                           </div>
                         </div>
                       </div>
@@ -297,5 +309,23 @@
                 </div>
                 
         </div>
+      </div>
+    </div>
+  </div>
+  
         <!-- footer start-->
+        <footer class="footer">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-6 footer-copyright">
+                <p class="mb-0">Copyright 2021-22 © Aibra All rights reserved.</p>
+              </div>
+              <div class="col-md-6">
+                <p class="pull-right mb-0">Hand crafted & made with <i class="fa fa-heart font-secondary"></i></p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
     {% endblock %}
